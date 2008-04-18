@@ -12,9 +12,6 @@
 
 	define('FFMPEG_BIN','/usr/bin/ffmpeg');
 
-	#/usr/local/bin/ffmpeg  -i input.mov -ar 22050 -ab 56 -aspect 4:3 \
-#	 -b 200 -r 12 -f flv -s 320x240 -acodec mp3 -ac 1 output.flv
-
 	class VideoEncoder {
 		
 		private $ffmpeg_exec = '';
