@@ -1,5 +1,6 @@
 <?
 
+
 	/*
 	 *	vCore Flash Media Server VOD Layer
 	 */
@@ -17,10 +18,10 @@
 		}
 
 		private function generate_fms_source(){
-			if(!$fms_schema 
+		/*	if(!$fms_schema 
 				or !$fms_server 
-				or !$fms_source) return false;
-			return $fms_schema . $fms_server . '/vod/' . $fms_source;
+				or !$fms_source) return false;*/
+			return $this->fms_schema . $this->fms_server . '/vod/' . $this->fms_source;
 		}
 
 		public function SetSchema($schema){
@@ -36,11 +37,16 @@
 		}
 
 		public function ToString(){
-			return generate_fms_source();
+			return $this->generate_fms_source();
 		}
 
 		public function GenerateSWF($width, $height, $backcolor){
+			ming_useswfversion(7);
+
 			$fm = new SWFMovie(7);
+
+			$fm->nextFrame();
+			$fm->nextFrame();
 
 			$fm->setDimension($width,$height);
 			$fm->setBackground($backcolor['r'],$backcolor['g'],$backcolor['b']);
@@ -54,15 +60,16 @@
 
 			$this->as .= 'nc = new NetConnection();' . CRLF;
 			$this->as .= 'nc.connect(null);' . CRLF;
-			$this->as .= 'stream = new NetStream(nc);' . CRLF;
+			$this->as .= 'stream = new NetStream("rtmp://localhost/vod");' . CRLF;
 			$this->as .= 'FLVContainer0.attachVideo(stream);' . CRLF;
 			$this->as .= 'stream.setBufferTime(10);' . CRLF;
-			$this->as .= 'stream.play(\'' . $this->generate_fms_source() . '\');';
+			$this->as .= 'stream.play("sample");';
 
 			$aso = new SWFAction($this->as);
 			$fm->add($aso);
 
 			header('Content-type: application/x-shockwave-flash');
+			$fm->nextFrame();
 			$fm->output();
 		}
 	}
