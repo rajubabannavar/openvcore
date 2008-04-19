@@ -6,7 +6,7 @@
 
 	require('vcl_db.inc.php');
 
-	 class MySQLDB implements DBAbstractionLayer {
+	 class mysqlDB implements DBAbstractionLayer {
 		
 		public $ResultSet = array();
 		public $Result = null;
@@ -35,7 +35,7 @@
 			if(mysql_errno()){
 				throw new Exception('DB error: ' . mysql_error());
 			}
-			if(preg_match_all('/^SELECT/i',$query){
+			if(preg_match('/^SELECT/i',$query)){
 				while(
 					$this->ResultSet[] = mysql_fetch_assoc($query_result_rsrc)
 				);
@@ -47,6 +47,12 @@
 
 		public function NumRows(){
 			return mysql_num_rows($this->Result);
+		}
+		public function UseSchema($schema){
+			return mysql_select_db($schema);
+		}
+		public function GetRow(){
+			return mysql_fetch_assoc($this->Result);
 		}
 	}
 
